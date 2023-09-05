@@ -11,7 +11,7 @@ const Figure = styled.figure`
     flex-direction: column;
     & > img {
         max-width: 100%;
-        border-radius: 20px 20px 0 0;
+        border-radius: ${props => props.$rodape ? '20px 20px 0 0' : '20px'}; 
     }
     figcaption {
         background-color: #001634;
@@ -41,22 +41,24 @@ const Rodape = styled.footer`
     align-items: center;
 `
 
-export default function Imagem({ foto }) {
+export default function Imagem({ foto, expandida = false, aoExpandir, rodape = true }) {
     return (
-        <Figure>
+        <Figure $expandida={expandida} $rodape={rodape} id={`foto-${foto.id}`}>
             <img src={foto.path} alt={foto.titulo} />
-            <figcaption>
-                <h3>{foto.titulo}</h3>
-                <Rodape>
-                    <h4>{foto.fonte}</h4>
-                    <BotaoIcone>
-                        <img src={favorito} alt="Ícone favorito" />
-                    </BotaoIcone>
-                    <BotaoIcone>
-                        <img src={expandir} alt="Ícone expandir" />
-                    </BotaoIcone>
-                </Rodape>
-            </figcaption>
+            {rodape &&
+                <figcaption>
+                    <h3>{foto.titulo}</h3>
+                    <Rodape>
+                        <h4>{foto.fonte}</h4>
+                        <BotaoIcone>
+                            <img src={favorito} alt="Ícone favorito" />
+                        </BotaoIcone>
+                        {!expandida && <BotaoIcone aria-hidden={expandida} onClick={() => aoExpandir(foto)}>
+                            <img src={expandir} alt="Ícone expandir" />
+                        </BotaoIcone>}
+                    </Rodape>
+                </figcaption>
+            }
         </Figure>
     )
 }

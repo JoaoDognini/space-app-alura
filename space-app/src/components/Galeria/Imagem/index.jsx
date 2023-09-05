@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import BotaoIcone from '../../BotaoIcone'
 import expandir from '/icones/expandir.png';
 import favorito from '/icones/favorito.png';
+import favoritoAtivo from '/icones/favorito-ativo.png';
 
 const Figure = styled.figure`
     width: ${props => props.$expandida ? '90%' : '460px'};
@@ -41,7 +42,10 @@ const Rodape = styled.footer`
     align-items: center;
 `
 
-export default function Imagem({ foto, expandida = false, aoExpandir, rodape = true }) {
+export default function Imagem({ foto, expandida = false, aoExpandir, rodape = true, aoAlternarFavorito }) {
+
+    const iconeFavorito = foto.favorita ? favoritoAtivo : favorito;
+
     return (
         <Figure $expandida={expandida} $rodape={rodape} id={`foto-${foto.id}`}>
             <img src={foto.path} alt={foto.titulo} />
@@ -50,8 +54,8 @@ export default function Imagem({ foto, expandida = false, aoExpandir, rodape = t
                     <h3>{foto.titulo}</h3>
                     <Rodape>
                         <h4>{foto.fonte}</h4>
-                        <BotaoIcone>
-                            <img src={favorito} alt="Ícone favorito" />
+                        <BotaoIcone onClick={() => aoAlternarFavorito(foto)}>
+                            <img src={iconeFavorito} alt="Ícone favorito" />
                         </BotaoIcone>
                         {!expandida && <BotaoIcone aria-hidden={expandida} onClick={() => aoExpandir(foto)}>
                             <img src={expandir} alt="Ícone expandir" />
